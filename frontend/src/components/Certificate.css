@@ -1,0 +1,241 @@
+src/components/Certificate.css
+
+body {
+    background: #f8f9fa;
+    font-family: 'Lato', sans-serif;
+}
+
+.certificates-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 15px;
+    text-align: center;
+}
+
+.certificate-wrapper {
+    position: relative;
+    margin: 20px auto;
+    background-size: cover;
+    background-position: center;
+    border-radius: 6px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+
+/* --- STYLES FOR CERTIFICATE 1 (Landscape Template) --- */
+
+#certificate1 {
+    width: 1100px;
+    height: 800px;
+}
+
+.certificate-field {
+    position: absolute;
+    font-size: 18px;
+    font-weight: 500;
+    color: #111;
+    text-shadow: 0 0 2px rgba(255, 255, 255, 0.8);
+}
+
+#certificate1 .cert-title {
+    top: 80px;
+    font-family: "Times New Roman", Times, serif;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 28px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+#certificate1 .cert-number {
+    top: 170px;
+    left: 350px;
+}
+
+#certificate1 .cert-date {
+    top: 170px;
+    right: 350px;
+}
+
+#certificate1 .item {
+    top: 220px;
+    left: 100px;
+}
+
+#certificate1 .length {
+    top: 260px;
+    left: 100px;
+}
+
+#certificate1 .weight {
+    top: 300px;
+    left: 100px;
+}
+
+#certificate1 .gemstone {
+    top: 340px;
+    left: 100px;
+}
+
+#certificate1 .carat {
+    top: 380px;
+    left: 100px;
+}
+
+#certificate1 .color {
+    top: 420px;
+    left: 100px;
+}
+
+#certificate1 .clarity {
+    top: 460px;
+    left: 100px;
+}
+
+#certificate1 .metal {
+    top: 500px;
+    left: 100px;
+}
+
+#certificate1 .value {
+    top: 540px;
+    left: 100px;
+}
+
+#certificate1 .cert-image {
+    position: absolute;
+    top: 220px;
+    right: 100px;
+    width: 350px;
+    height: 280px;
+    object-fit: cover;
+    border: 2px solid #ddd;
+    background: #fff;
+}
+
+
+/* --- STYLES FOR CERTIFICATE 2 (Portrait Template) --- */
+
+#certificate2 {
+    width: 800px;
+    height: 1100px;
+    color: #333;
+    font-family: 'Playfair Display', serif;
+}
+
+#certificate2 .content-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#certificate2 .text-paragraphs {
+    position: absolute;
+    top: 295px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    text-align: left;
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+    font-size: medium;
+    line-height: 1.6;
+    color: #333;
+    /* z-index: 10; */
+}
+
+#certificate2 .text-paragraphs p {
+    margin-bottom: 20px;
+}
+
+#certificate2 .notice strong {
+    font-weight: 700;
+}
+
+#certificate2 .details-block {
+    position: absolute;
+    bottom: 136px;
+    left: 100px;
+    text-align: left;
+    font-family: 'Lato', sans-serif;
+    font-size: 18px;
+    line-height: 1.7;
+    color: #333;
+    z-index: 10;
+}
+
+#certificate2 .details-block span {
+    font-weight: 400;
+}
+
+#certificate2 .text-paragraphs strong {
+    font-weight: 700;
+}
+
+
+/* --- Hologram Sticker Style --- */
+
+.hologram-portrait {
+    /* position: absolute;
+    bottom: 14rem;
+    left: 31rem;
+    width: 14rem;
+    height: 14rem; */
+    /* opacity: ; */
+    /* z-index: 15; */
+    position: absolute;
+    bottom: 288px;
+    left: 544px;
+    width: 128px;
+    height: 128px;
+}
+
+.hologram-landscape {
+    /* position: absolute;
+    bottom: 5rem;
+    left: 280px;
+    width: 15rem;
+    height: 15rem; */
+    /* opacity: 0.8; */
+    position: absolute;
+    bottom: 144px;
+    left: 293px;
+    width: 112px;
+    height: 112px;
+}
+
+.notice {
+    text-align: center;
+    color: red;
+    font-weight: bold;
+    position: relative;
+}
+
+#certificate1 .cert-header-row {
+    position: absolute;
+    top: 170px;
+    left: 80px;
+    width: 85%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 500;
+    gap: 10px;
+    white-space: normal;
+    /* ⬅ allows wrapping if needed */
+}
+
+#certificate1 .cert-header-row span {
+    max-width: 30%;
+    /* ⬅ each side gets space, never overlaps */
+    word-break: break-word;
+    /* ⬅ breaks long numbers safely */
+}
+
