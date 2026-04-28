@@ -1,13 +1,26 @@
 <?php
 
 
+use App\Http\Middleware\VerifyExternalApiKey;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\CertificateOrderController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\ExternalOrderController;
 use App\Models\Store;
+
+// ───── External API (CRM se data receive) ─────
+Route::middleware(VerifyExternalApiKey::class)
+    ->prefix('external')
+    ->group(function () {
+        Route::post('/orders', [ExternalOrderController::class, 'store']);
+    });
+
+// ───── CRM Orders (Admin — for certificate form import) ─────
+Route::get('/crm-orders', [ExternalOrderController::class, 'index']);
+Route::get('/crm-orders/{crmOrder}', [ExternalOrderController::class, 'show']);
 
 // Admin Auth
 Route::post('/admin/register', [AdminAuthController::class, 'register']);
