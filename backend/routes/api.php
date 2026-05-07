@@ -69,3 +69,41 @@ Route::post('/admin/blogs', [BlogController::class, 'store']);
 Route::get('/admin/blogs/{id}', [BlogController::class, 'show']);
 Route::post('/admin/blogs/{id}', [BlogController::class, 'update']); // Using POST for file upload
 Route::delete('/admin/blogs/{id}', [BlogController::class, 'destroy']);
+
+// Dedicated Media Serving Route (Handles CORS and Prefix inconsistencies)
+Route::get('/media/{prefix}/{path}', function ($prefix, $path) {
+    if (!in_array($prefix, ['uploads', 'certificates', 'blogs', 'images'])) {
+        abort(404);
+    }
+
+    $publicFile = public_path($prefix . '/' . $path);
+    $storageFile = storage_path('app/public/' . ($prefix === 'uploads' ? '' : $prefix . '/') . $path);
+
+    $file = file_exists($publicFile) ? $publicFile : (file_exists($storageFile) ? $storageFile : null);
+    
+    if (!$file) {
+        abort(404, 'File not found on server');
+    }
+
+    $response = response()->file($file);
+    
+    // Use FRONTEND_URL or allow common origins
+    $allowedOrigins = [
+        'http://localhost:5173',
+        'https://vgllab.com',
+        'https://admin.vgllab.com',
+        env('FRONTEND_URL'),
+    ];
+    
+    $origin = request()->headers->get('Origin');
+    if (in_array($origin, $allowedOrigins)) {
+        $response->headers->set('Access-Control-Allow-Origin', $origin);
+    } else {
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+    }
+    
+    $response->headers->set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    
+    return $response;
+})->where('path', '.*');

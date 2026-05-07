@@ -281,7 +281,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({}) => {
   const recentPayments = [...payments]
     .sort(
       (a, b) =>
-        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
     )
     .slice(0, 5);
 
@@ -426,7 +426,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({}) => {
             Payments
           </button>
 
-          <button
+          {/* <button
             onClick={() => setActiveTab("tracking")}
             className={`px-6 py-3 font-medium transition-all duration-300 ${
               activeTab === "tracking"
@@ -436,7 +436,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({}) => {
           >
             <Truck className="w-5 h-5 inline mr-2" />
             Tracking
-          </button>
+          </button> */}
         </div>
 
         {activeTab === "overview" && (
@@ -544,13 +544,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({}) => {
                                 payment.status === "shipped"
                                   ? "bg-blue-100 text-blue-700"
                                   : payment.status === "completed"
-                                  ? "bg-green-100 text-green-700"
-                                  : payment.status === "failed" ||
-                                    payment.status === "cancelled"
-                                  ? "bg-red-100 text-red-700"
-                                  : payment.status === "pending"
-                                  ? "bg-yellow-100 text-yellow-700"
-                                  : "bg-gray-100 text-gray-700"
+                                    ? "bg-green-100 text-green-700"
+                                    : payment.status === "failed" ||
+                                        payment.status === "cancelled"
+                                      ? "bg-red-100 text-red-700"
+                                      : payment.status === "pending"
+                                        ? "bg-yellow-100 text-yellow-700"
+                                        : "bg-gray-100 text-gray-700"
                               }`}
                             >
                               {payment.status}
@@ -752,7 +752,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({}) => {
                 <div className="space-y-5">
                   {TRACKING_STATUS_DISTRIBUTION.map((item) => {
                     const percentage = Math.round(
-                      (item.value / TRACKING_OVERVIEW.totalShipments) * 100
+                      (item.value / TRACKING_OVERVIEW.totalShipments) * 100,
                     );
                     return (
                       <div key={item.label}>
@@ -910,10 +910,12 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({}) => {
         title="Add New Certificate"
         maxWidth="max-w-4xl"
       >
-        <CertificateForm onSuccess={() => {
-          setShowAddModal(false);
-          fetchData(); // Immediately fetch updated data
-        }} />
+        <CertificateForm
+          onSuccess={() => {
+            setShowAddModal(false);
+            fetchData(); // Immediately fetch updated data
+          }}
+        />
       </Modal>
 
       <Modal

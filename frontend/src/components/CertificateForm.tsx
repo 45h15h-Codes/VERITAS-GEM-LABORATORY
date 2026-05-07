@@ -66,7 +66,7 @@ export const CertificateForm: React.FC<CertificateFormProps> = ({
 
   const [imagePreview, setImagePreview] = useState<string>(
     editingCertificate?.image
-      ? `${API_BASE_URL}/${editingCertificate.image}`
+      ? `${API_BASE_URL}/api/media/${editingCertificate.image}`
       : "",
   );
   const [formData, setFormData] = useState<{ [key: string]: any }>({

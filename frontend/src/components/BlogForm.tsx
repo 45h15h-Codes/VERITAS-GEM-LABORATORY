@@ -56,7 +56,7 @@ export const BlogForm: React.FC<BlogFormProps> = ({ blog, onSuccess }) => {
                 featured_image: null,
             });
             if (blog.featured_image) {
-                setExistingImage(`${API_BASE_URL}/${blog.featured_image}`);
+                setExistingImage(`${API_BASE_URL}/api/media/${blog.featured_image}`);
             }
         }
     }, [blog]);

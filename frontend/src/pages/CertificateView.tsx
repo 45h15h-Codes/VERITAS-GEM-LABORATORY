@@ -763,7 +763,7 @@ export const CertificateView: React.FC<CertificateViewProps> = ({ certificateNum
                 <div className="relative bg-gradient-to-br from-slate-50 to-white p-6 sm:p-8 flex items-center justify-center">
                   <div className="relative group w-full">
                     <img
-                      src={`${API_BASE_URL}/${certificate.image}`}
+                      src={`${API_BASE_URL}/api/media/${certificate.image}`}
                       alt={certificate.title}
                       className="relative w-full h-64 sm:h-80 md:h-96 object-cover rounded-xl sm:rounded-2xl shadow-xl border border-slate-200/50"
                     />
@@ -946,7 +946,7 @@ export const CertificateView: React.FC<CertificateViewProps> = ({ certificateNum
                   metal_purity: certificate.metal_purity,
                   value: certificate.value,
                   certifier_name: certificate.certifier_name,
-                  image_url: `${API_BASE_URL}/${certificate.image}`,
+                  image_url: `${API_BASE_URL}/api/media/${certificate.image}`,
                 }}
               />
             </div>

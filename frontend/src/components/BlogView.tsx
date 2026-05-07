@@ -68,7 +68,7 @@ export const BlogView: React.FC<BlogViewProps> = ({ blog, onClose }) => {
                     {blog.featured_image && (
                         <div className="mb-8 rounded-xl overflow-hidden shadow-lg">
                             <img
-                                src={`${API_BASE_URL}/${blog.featured_image}`}
+                                src={`${API_BASE_URL}/api/media/${blog.featured_image}`}
                                 alt={blog.title}
                                 className="w-full h-full object-cover overflow-hidden"
                             />

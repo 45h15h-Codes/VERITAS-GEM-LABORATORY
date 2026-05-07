@@ -8,6 +8,7 @@ use App\Models\Store;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Str;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class CertificateController extends Controller
@@ -55,7 +56,10 @@ class CertificateController extends Controller
 
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $filename = time() . '_' . $image->getClientOriginalName();
+            $originalName = $image->getClientOriginalName();
+            $extension = $image->getClientOriginalExtension();
+            $cleanName = Str::slug(pathinfo($originalName, PATHINFO_FILENAME));
+            $filename = time() . '_' . $cleanName . '.' . $extension;
             $image->move(public_path('uploads/certificates'), $filename);
             $data['image'] = 'uploads/certificates/' . $filename;
         } elseif ($request->filled('image_url')) {
@@ -129,7 +133,13 @@ class CertificateController extends Controller
 
         $data = $request->all();
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('certificates', 'public');
+            $image = $request->file('image');
+            $originalName = $image->getClientOriginalName();
+            $extension = $image->getClientOriginalExtension();
+            $cleanName = Str::slug(pathinfo($originalName, PATHINFO_FILENAME));
+            $filename = time() . '_' . $cleanName . '.' . $extension;
+            $image->move(public_path('uploads/certificates'), $filename);
+            $data['image'] = 'uploads/certificates/' . $filename;
         }
 
         $certificate->update($data);

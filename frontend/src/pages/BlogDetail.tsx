@@ -113,7 +113,7 @@
 //             >
 //               <div className="relative">
 //                 <img
-//                   src={`${API_BASE_URL}/images/VGL-LOGO.png`}
+//                   src={`${API_BASE_URL}/api/media/images/VGL-LOGO.png`}
 //                   alt="VGL Logo"
 //                   className="w-20 h-20  rounded-full shadow-lg object-cover group-hover:shadow-xl transition-all duration-300"
 //                 />
@@ -335,7 +335,7 @@ export const BlogDetail: React.FC = () => {
             >
               <div className="relative">
                 <img
-                  src={`${API_BASE_URL}/images/VGL-LOGO.svg`}
+                  src={`${API_BASE_URL}/api/media/images/VGL-LOGO.svg`}
                   alt="VGL Logo"
                   className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full shadow-lg object-cover group-hover:shadow-xl transition-all duration-300"
                 />
@@ -415,7 +415,7 @@ export const BlogDetail: React.FC = () => {
         {blog.featured_image && (
           <div className="mb-10 sm:mb-12 lg:mb-16 rounded-xl sm:rounded-2xl overflow-hidden shadow-xl sm:shadow-2xl border border-slate-200/50">
             <img
-              src={`${API_BASE_URL}/${blog.featured_image}`}
+              src={`${API_BASE_URL}/api/media/${blog.featured_image}`}
               alt={blog.title}
               className="w-full h-48 sm:h-64 md:h-80 lg:h-[500px] object-cover"
             />

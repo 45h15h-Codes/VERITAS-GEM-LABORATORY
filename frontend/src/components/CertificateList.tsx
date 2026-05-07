@@ -76,7 +76,7 @@ export const CertificateList: React.FC<{ certificates?: any[] }> = ({ certificat
             <div className="flex flex-col md:flex-row gap-6">
               {cert.image && (
                 <img
-                  src={`${API_BASE_URL}/${cert.image}`}
+                  src={`${API_BASE_URL}/api/media/${cert.image}`}
                   alt={cert.title}
                   className="w-full md:w-48 h-48 object-cover rounded-lg shadow-md"
                 />

@@ -373,7 +373,7 @@ export const PublicBlogs: React.FC = () => {
                                     {blog.featured_image ? (
                                         <div className="h-48 sm:h-56 overflow-hidden">
                                             <img
-                                                src={`${API_BASE_URL}/${blog.featured_image}`}
+                                                src={`${API_BASE_URL}/api/media/${blog.featured_image}`}
                                                 alt={blog.title}
                                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                                             />

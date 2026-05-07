@@ -75,7 +75,7 @@ export const BlogList: React.FC<BlogListProps> = ({ blogs, onView, onEdit, onDel
                                     <div className="flex items-center gap-4">
                                         {blog.featured_image ? (
                                             <img
-                                                src={`${API_BASE_URL}/${blog.featured_image}`}
+                                                src={`${API_BASE_URL}/api/media/${blog.featured_image}`}
                                                 alt={blog.title}
                                                 className="w-16 h-16 object-cover rounded-lg"
                                             />
