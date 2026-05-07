@@ -208,6 +208,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Calendar, User, ArrowRight, BookOpen, Menu, X } from 'lucide-react';
+import { resolveImageUrl } from '../utils/imageUrl';
 
 interface Blog {
     id: number;
@@ -282,7 +283,7 @@ export const PublicBlogs: React.FC = () => {
                         >
                             <div className="relative">
                                 <img
-                                    src={`${API_BASE_URL}/images/VGL-LOGO.svg`}
+                                    src={`${API_BASE_URL}/images/VGL-LOGO.png`}
                                     alt="VGL Logo"
                                     className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full shadow-lg object-cover group-hover:shadow-xl transition-all duration-300"
                                 />
@@ -373,7 +374,7 @@ export const PublicBlogs: React.FC = () => {
                                     {blog.featured_image ? (
                                         <div className="h-48 sm:h-56 overflow-hidden">
                                             <img
-                                                src={`${API_BASE_URL}/api/media/${blog.featured_image}`}
+                                                src={resolveImageUrl(blog.featured_image, API_BASE_URL)}
                                                 alt={blog.title}
                                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                                             />

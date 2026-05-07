@@ -5,14 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Certificate;
 use App\Models\CrmOrder;
 use App\Models\Store;
+use App\Services\CloudinaryUploadService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Str;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class CertificateController extends Controller
 {
+    public function __construct(private CloudinaryUploadService $uploadService)
+    {
+    }
+
     public function index()
     {
         $certificates = Certificate::leftJoin('stores', 'certificates.store', '=', 'stores.id')
@@ -55,28 +59,13 @@ class CertificateController extends Controller
         $data = $request->except(['image_url', 'crm_order_id']);
 
         if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $originalName = $image->getClientOriginalName();
-            $extension = $image->getClientOriginalExtension();
-            $cleanName = Str::slug(pathinfo($originalName, PATHINFO_FILENAME));
-            $filename = time() . '_' . $cleanName . '.' . $extension;
-            $image->move(public_path('uploads/certificates'), $filename);
-            $data['image'] = 'uploads/certificates/' . $filename;
-        } elseif ($request->filled('image_url')) {
-            // Download image from Cloudinary URL and save locally
-            try {
-                $imageContent = file_get_contents($request->image_url);
-                $extension = pathinfo(parse_url($request->image_url, PHP_URL_PATH), PATHINFO_EXTENSION) ?: 'jpg';
-                $filename = time() . '_crm_' . uniqid() . '.' . $extension;
-                $uploadPath = public_path('uploads/certificates');
-                if (!is_dir($uploadPath)) {
-                    mkdir($uploadPath, 0755, true);
-                }
-                file_put_contents($uploadPath . '/' . $filename, $imageContent);
-                $data['image'] = 'uploads/certificates/' . $filename;
-            } catch (\Exception $e) {
-                return Response::json(['errors' => ['image' => ['Failed to download image from URL: ' . $e->getMessage()]]], 422);
+            $uploadedImage = $this->uploadService->uploadFile($request->file('image'), 'vgl/certificates');
+            if ($uploadedImage === null) {
+                return Response::json(['errors' => ['image' => ['Failed to upload image to Cloudinary.']]], 422);
             }
+            $data['image'] = $uploadedImage['url'];
+        } elseif ($request->filled('image_url')) {
+            $data['image'] = $request->image_url;
         }
 
         $certificate = Certificate::create($data);
@@ -113,6 +102,7 @@ class CertificateController extends Controller
             'type' => 'required|in:diamond,jewellery',
             'certifier_name' => 'required',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image_url' => 'nullable|url|max:500',
             'title' => 'required',
             'store' => 'required',
             'date' => 'required|date',
@@ -131,15 +121,18 @@ class CertificateController extends Controller
             return Response::json(['errors' => $validator->errors()], 422);
         }
 
-        $data = $request->all();
+        $data = $request->except(['image_url']);
         if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $originalName = $image->getClientOriginalName();
-            $extension = $image->getClientOriginalExtension();
-            $cleanName = Str::slug(pathinfo($originalName, PATHINFO_FILENAME));
-            $filename = time() . '_' . $cleanName . '.' . $extension;
-            $image->move(public_path('uploads/certificates'), $filename);
-            $data['image'] = 'uploads/certificates/' . $filename;
+            $this->deleteStoredImage($certificate->image);
+
+            $uploadedImage = $this->uploadService->uploadFile($request->file('image'), 'vgl/certificates');
+            if ($uploadedImage === null) {
+                return Response::json(['errors' => ['image' => ['Failed to upload image to Cloudinary.']]], 422);
+            }
+            $data['image'] = $uploadedImage['url'];
+        } elseif ($request->filled('image_url')) {
+            $this->deleteStoredImage($certificate->image);
+            $data['image'] = $request->image_url;
         }
 
         $certificate->update($data);
@@ -152,8 +145,33 @@ class CertificateController extends Controller
         if (!$certificate) {
             return Response::json(['message' => 'Certificate not found'], 404);
         }
+        $this->deleteStoredImage($certificate->image);
         $certificate->delete();
         return Response::json(['message' => 'Certificate deleted'], 200);
+    }
+
+    private function deleteStoredImage(?string $image): void
+    {
+        if (!$image) {
+            return;
+        }
+
+        if (str_contains($image, 'cloudinary.com')) {
+            $this->uploadService->deleteByUrl($image);
+            return;
+        }
+
+        $paths = [
+            public_path($image),
+            storage_path('app/public/' . $image),
+        ];
+
+        foreach ($paths as $path) {
+            if (is_file($path)) {
+                unlink($path);
+                return;
+            }
+        }
     }
 
     public function search($certificate_number)

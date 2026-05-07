@@ -1,6 +1,7 @@
 import React from 'react';
 import { FileText, Pen, Trash, Eye } from 'lucide-react';
 import Swal from 'sweetalert2';
+import { resolveImageUrl } from '../utils/imageUrl';
 
 interface Blog {
     id: number;
@@ -75,7 +76,7 @@ export const BlogList: React.FC<BlogListProps> = ({ blogs, onView, onEdit, onDel
                                     <div className="flex items-center gap-4">
                                         {blog.featured_image ? (
                                             <img
-                                                src={`${API_BASE_URL}/api/media/${blog.featured_image}`}
+                                                src={resolveImageUrl(blog.featured_image, API_BASE_URL)}
                                                 alt={blog.title}
                                                 className="w-16 h-16 object-cover rounded-lg"
                                             />
