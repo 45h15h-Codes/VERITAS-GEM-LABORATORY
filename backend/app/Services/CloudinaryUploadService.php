@@ -14,16 +14,20 @@ class CloudinaryUploadService
     private function client(): Cloudinary
     {
         if ($this->cloudinary === null) {
-            $this->cloudinary = new Cloudinary([
-                'cloud' => [
-                    'cloud_name' => config('cloudinary.cloud_name'),
-                    'api_key' => config('cloudinary.api_key'),
-                    'api_secret' => config('cloudinary.api_secret'),
-                ],
-                'url' => [
-                    'secure' => true,
-                ],
-            ]);
+            $cloudinaryUrl = config('cloudinary.cloudinary_url');
+
+            $this->cloudinary = $cloudinaryUrl
+                ? new Cloudinary($cloudinaryUrl)
+                : new Cloudinary([
+                    'cloud' => [
+                        'cloud_name' => config('cloudinary.cloud_name'),
+                        'api_key' => config('cloudinary.api_key'),
+                        'api_secret' => config('cloudinary.api_secret'),
+                    ],
+                    'url' => [
+                        'secure' => true,
+                    ],
+                ]);
         }
 
         return $this->cloudinary;
