@@ -6,6 +6,7 @@ import { Card } from './Card';
 import { Modal } from './Modal';
 import Swal from 'sweetalert2';
 import { CertificateForm } from './CertificateForm';
+import { resolveImageUrl } from '../utils/imageUrl';
 
 const API_BASE_URL = import.meta.env.VITE_BASE_URL || 'http://localhost:8000';
 
@@ -76,7 +77,7 @@ export const CertificateList: React.FC<{ certificates?: any[] }> = ({ certificat
             <div className="flex flex-col md:flex-row gap-6">
               {cert.image && (
                 <img
-                  src={`${API_BASE_URL}/${cert.image}`}
+                  src={resolveImageUrl(cert.image, API_BASE_URL)}
                   alt={cert.title}
                   className="w-full md:w-48 h-48 object-cover rounded-lg shadow-md"
                 />
@@ -186,7 +187,7 @@ export const CertificateList: React.FC<{ certificates?: any[] }> = ({ certificat
             {viewingCertificate.image && (
               <div className="flex justify-center">
                 <img
-                  src={`${API_BASE_URL}/${viewingCertificate.image}`}
+                  src={resolveImageUrl(viewingCertificate.image, API_BASE_URL)}
                   alt={viewingCertificate.title}
                   className="max-h-96 object-contain rounded-lg shadow-lg"
                 />

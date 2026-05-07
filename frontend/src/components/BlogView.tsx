@@ -1,5 +1,6 @@
 import React from 'react';
 import { X, Calendar, User, Clock, Tag } from 'lucide-react';
+import { resolveImageUrl } from '../utils/imageUrl';
 
 interface Blog {
     id: number;
@@ -68,7 +69,7 @@ export const BlogView: React.FC<BlogViewProps> = ({ blog, onClose }) => {
                     {blog.featured_image && (
                         <div className="mb-8 rounded-xl overflow-hidden shadow-lg">
                             <img
-                                src={`${API_BASE_URL}/${blog.featured_image}`}
+                                src={resolveImageUrl(blog.featured_image, API_BASE_URL)}
                                 alt={blog.title}
                                 className="w-full h-full object-cover overflow-hidden"
                             />

@@ -6,6 +6,7 @@ import { Input } from "./Input";
 import { toast } from "sonner";
 import axios from "axios";
 import { useEffect } from "react";
+import { resolveImageUrl } from "../utils/imageUrl";
 
 interface CertificateFormProps {
   onSuccess: () => void;
@@ -66,7 +67,7 @@ export const CertificateForm: React.FC<CertificateFormProps> = ({
 
   const [imagePreview, setImagePreview] = useState<string>(
     editingCertificate?.image
-      ? `${API_BASE_URL}/${editingCertificate.image}`
+      ? resolveImageUrl(editingCertificate.image, API_BASE_URL)
       : "",
   );
   const [formData, setFormData] = useState<{ [key: string]: any }>({

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { X, Image as ImageIcon, Save } from 'lucide-react';
 import { Button } from './Button';
 import { TiptapEditor } from './TiptapEditor';
+import { resolveImageUrl } from '../utils/imageUrl';
 
 interface BlogFormData {
     title: string;
@@ -56,7 +57,7 @@ export const BlogForm: React.FC<BlogFormProps> = ({ blog, onSuccess }) => {
                 featured_image: null,
             });
             if (blog.featured_image) {
-                setExistingImage(`${API_BASE_URL}/${blog.featured_image}`);
+                setExistingImage(resolveImageUrl(blog.featured_image, API_BASE_URL));
             }
         }
     }, [blog]);

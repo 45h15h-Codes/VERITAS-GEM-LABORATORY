@@ -589,6 +589,7 @@ import React, { useState, useEffect } from 'react';
 import CertificateDownload from "../components/CertificateDownload";
 import { ArrowLeft, Download, ShoppingCart, Award, X, Shield, ArrowDownToLine, Menu } from 'lucide-react';
 import { PaymentModal } from '../components/PaymentModal';
+import { resolveImageUrl } from '../utils/imageUrl';
 
 interface CertificateViewProps {
   certificateNumber: string;
@@ -684,7 +685,7 @@ export const CertificateView: React.FC<CertificateViewProps> = ({ certificateNum
             >
               <div className="relative">
                 <img
-                  src={`${API_BASE_URL}/images/VGL-LOGO.svg`}
+                  src={`${API_BASE_URL}/images/VGL-LOGO.png`}
                   alt="VGL Logo"
                   className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full shadow-lg object-cover group-hover:shadow-xl transition-all duration-300"
                 />
@@ -763,7 +764,7 @@ export const CertificateView: React.FC<CertificateViewProps> = ({ certificateNum
                 <div className="relative bg-gradient-to-br from-slate-50 to-white p-6 sm:p-8 flex items-center justify-center">
                   <div className="relative group w-full">
                     <img
-                      src={`${API_BASE_URL}/${certificate.image}`}
+                      src={resolveImageUrl(certificate.image, API_BASE_URL)}
                       alt={certificate.title}
                       className="relative w-full h-64 sm:h-80 md:h-96 object-cover rounded-xl sm:rounded-2xl shadow-xl border border-slate-200/50"
                     />
@@ -946,7 +947,7 @@ export const CertificateView: React.FC<CertificateViewProps> = ({ certificateNum
                   metal_purity: certificate.metal_purity,
                   value: certificate.value,
                   certifier_name: certificate.certifier_name,
-                  image_url: `${API_BASE_URL}/${certificate.image}`,
+                  image_url: resolveImageUrl(certificate.image, API_BASE_URL),
                 }}
               />
             </div>

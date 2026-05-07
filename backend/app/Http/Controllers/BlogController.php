@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
+use App\Services\CloudinaryUploadService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class BlogController extends Controller
 {
+    public function __construct(private CloudinaryUploadService $uploadService)
+    {
+    }
+
     /*
      * Display a listing of blogs (Admin)
      */
@@ -58,10 +62,13 @@ class BlogController extends Controller
 
         // Handle image upload
         if ($request->hasFile('featured_image')) {
-            $image = $request->file('featured_image');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $image->move(public_path('uploads/blogs'), $imageName);
-            $validated['featured_image'] = 'uploads/blogs/' . $imageName;
+            $uploadedImage = $this->uploadService->uploadFile($request->file('featured_image'), 'vgl/blogs');
+            if ($uploadedImage === null) {
+                return response()->json([
+                    'errors' => ['featured_image' => ['Failed to upload image to Cloudinary.']]
+                ], 422);
+            }
+            $validated['featured_image'] = $uploadedImage['url'];
         }
 
         // Set published_at if status is published
@@ -127,15 +134,15 @@ class BlogController extends Controller
 
         // image upload
         if ($request->hasFile('featured_image')) {
-            // Delete old image
-            if ($blog->featured_image && file_exists(public_path($blog->featured_image))) {
-                unlink(public_path($blog->featured_image));
-            }
+            $this->deleteStoredImage($blog->featured_image);
 
-            $image = $request->file('featured_image');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $image->move(public_path('uploads/blogs'), $imageName);
-            $validated['featured_image'] = 'uploads/blogs/' . $imageName;
+            $uploadedImage = $this->uploadService->uploadFile($request->file('featured_image'), 'vgl/blogs');
+            if ($uploadedImage === null) {
+                return response()->json([
+                    'errors' => ['featured_image' => ['Failed to upload image to Cloudinary.']]
+                ], 422);
+            }
+            $validated['featured_image'] = $uploadedImage['url'];
         }
 
         // Set published_at if changing to published
@@ -158,15 +165,29 @@ class BlogController extends Controller
     {
         $blog = Blog::findOrFail($id);
 
-        // Delete featured image
-        if ($blog->featured_image && file_exists(public_path($blog->featured_image))) {
-            unlink(public_path($blog->featured_image));
-        }
+        $this->deleteStoredImage($blog->featured_image);
 
         $blog->delete();
 
         return response()->json([
             'message' => 'Blog deleted successfully'
         ]);
+    }
+
+    private function deleteStoredImage(?string $image): void
+    {
+        if (!$image) {
+            return;
+        }
+
+        if (str_contains($image, 'cloudinary.com')) {
+            $this->uploadService->deleteByUrl($image);
+            return;
+        }
+
+        $path = public_path($image);
+        if (is_file($path)) {
+            unlink($path);
+        }
     }
 }

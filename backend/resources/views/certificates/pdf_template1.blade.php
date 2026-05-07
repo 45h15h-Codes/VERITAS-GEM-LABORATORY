@@ -211,9 +211,11 @@
 
     @if ($certificate->image)
         @php
-            $imagePath = str_starts_with($certificate->image, 'uploads/')
-                ? public_path($certificate->image)
-                : storage_path('app/public/' . $certificate->image);
+            $imagePath = str_starts_with($certificate->image, 'http://') || str_starts_with($certificate->image, 'https://')
+                ? $certificate->image
+                : (str_starts_with($certificate->image, 'uploads/')
+                    ? public_path($certificate->image)
+                    : storage_path('app/public/' . $certificate->image));
         @endphp
         <img src="{{ $imagePath }}" class="cert-image" alt="Jewelry">
     @endif

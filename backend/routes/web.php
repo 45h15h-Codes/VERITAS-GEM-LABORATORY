@@ -3,14 +3,32 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CertificateOrderController;
 
-Route::get('/uploads/{path}', function ($path) {
-    $file = public_path('uploads/' . $path);
-    if (file_exists($file)) {
-        $response = response()->file($file);
-        $response->headers->set('Access-Control-Allow-Origin', 'http://localhost:5173');
-        return $response;
+Route::get('/{prefix}/{path}', function ($prefix, $path) {
+    if (!in_array($prefix, ['uploads', 'certificates'])) {
+        abort(404);
     }
-    abort(404);
+
+    // Determine base directory
+    $publicFile = public_path($prefix . '/' . $path);
+    $storageFile = storage_path('app/public/' . ($prefix === 'uploads' ? '' : $prefix . '/') . $path);
+
+    if (file_exists($publicFile)) {
+        $file = $publicFile;
+    } elseif (file_exists($storageFile)) {
+        $file = $storageFile;
+    } else {
+        abort(404);
+    }
+
+    $response = response()->file($file);
+    
+    // Set CORS headers from environment variable
+    $frontendUrl = env('FRONTEND_URL', 'http://localhost:5173');
+    $response->headers->set('Access-Control-Allow-Origin', $frontendUrl);
+    $response->headers->set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    
+    return $response;
 })->where('path', '.*');
 
 
