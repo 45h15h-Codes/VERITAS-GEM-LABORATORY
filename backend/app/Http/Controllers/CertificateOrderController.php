@@ -182,7 +182,12 @@ class CertificateOrderController extends Controller
 
         $order->update(['status' => 'cancelled']);
 
-        return redirect()->away($this->buildFrontendRedirectUrl('cancelled', $order));
+        $certificate = $order->certificate;
+        $certificateNumber = $certificate ? $certificate->certificate_number : '';
+
+        // Redirect to the certificate page on the frontend
+        $frontendUrl = env('FRONTEND_URL', 'http://localhost:5173');
+        return redirect()->away($frontendUrl . '/certificate/' . $certificateNumber . '?payment=cancelled');
     }
 
     protected function buildFrontendRedirectUrl(string $status, CertificateOrder $order): string
