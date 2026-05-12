@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Store extends Model
 {
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'template_image'];
 }
