@@ -28,27 +28,29 @@ VGL/
 ## 🛠️ Tech Stack
 
 ### Backend
-| Technology | Version | Purpose |
-|---|---|---|
-| PHP | ^8.2 | Runtime |
-| Laravel | ^12.0 | Framework |
-| Laravel Sanctum | ^4.2 | API Authentication |
-| Laravel DomPDF | ^3.1 | PDF Generation |
-| Intervention Image | ^3.11 | Image Processing |
-| SQLite | — | Default Database |
+
+| Technology         | Version | Purpose            |
+| ------------------ | ------- | ------------------ |
+| PHP                | ^8.2    | Runtime            |
+| Laravel            | ^12.0   | Framework          |
+| Laravel Sanctum    | ^4.2    | API Authentication |
+| Laravel DomPDF     | ^3.1    | PDF Generation     |
+| Intervention Image | ^3.11   | Image Processing   |
+| SQLite             | —      | Default Database   |
 
 ### Frontend
-| Technology | Version | Purpose |
-|---|---|---|
-| React | ^18.3 | UI Framework |
-| TypeScript | ^5.5 | Type Safety |
-| Vite | ^5.4 | Build Tool |
-| Tailwind CSS | ^3.4 | Styling |
-| React Router | ^7.9 | Client-side Routing |
-| Tiptap | ^3.11 | Rich Text Editor |
-| Axios | ^1.12 | HTTP Client |
-| SweetAlert2 | ^11 | Alerts & Confirmations |
-| Sonner | ^2.0 | Toast Notifications |
+
+| Technology   | Version | Purpose                |
+| ------------ | ------- | ---------------------- |
+| React        | ^18.3   | UI Framework           |
+| TypeScript   | ^5.5    | Type Safety            |
+| Vite         | ^5.4    | Build Tool             |
+| Tailwind CSS | ^3.4    | Styling                |
+| React Router | ^7.9    | Client-side Routing    |
+| Tiptap       | ^3.11   | Rich Text Editor       |
+| Axios        | ^1.12   | HTTP Client            |
+| SweetAlert2  | ^11     | Alerts & Confirmations |
+| Sonner       | ^2.0    | Toast Notifications    |
 
 ---
 
@@ -154,22 +156,22 @@ VITE_APP_NAME=VGL
 
 ### Backend
 
-| Command | Description |
-|---|---|
-| `php artisan serve` | Start the Laravel dev server |
-| `php artisan migrate` | Run database migrations |
-| `php artisan migrate:fresh --seed` | Reset DB and seed data |
-| `php artisan test` | Run PHPUnit tests |
-| `composer run dev` | Start server, queue, logs, and Vite concurrently |
+| Command                              | Description                                      |
+| ------------------------------------ | ------------------------------------------------ |
+| `php artisan serve`                | Start the Laravel dev server                     |
+| `php artisan migrate`              | Run database migrations                          |
+| `php artisan migrate:fresh --seed` | Reset DB and seed data                           |
+| `php artisan test`                 | Run PHPUnit tests                                |
+| `composer run dev`                 | Start server, queue, logs, and Vite concurrently |
 
 ### Frontend
 
-| Command | Description |
-|---|---|
-| `npm run dev` | Start Vite dev server |
-| `npm run build` | Build for production |
-| `npm run preview` | Preview production build |
-| `npm run lint` | Run ESLint |
+| Command               | Description                |
+| --------------------- | -------------------------- |
+| `npm run dev`       | Start Vite dev server      |
+| `npm run build`     | Build for production       |
+| `npm run preview`   | Preview production build   |
+| `npm run lint`      | Run ESLint                 |
 | `npm run typecheck` | Run TypeScript type checks |
 
 ---
@@ -177,17 +179,20 @@ VITE_APP_NAME=VGL
 ## 🗄️ Key Modules
 
 ### Certificate System
+
 - Unique auto-incremented certificate numbers (skips soft-deleted numbers)
 - Image upload and storage under `public/uploads/certificates`
 - Public search/verification via `/api/search/{certificate_number}`
 - PDF generation for download
 
 ### Order & Payments
+
 - Digital certificate orders (email delivery)
 - Physical certificate orders (PayPal payment)
 - PayPal return/cancel redirect handling with order status updates
 
 ### Blog
+
 - Admin-side rich text creation via Tiptap
 - Public blog listing and detail pages
 
@@ -197,21 +202,15 @@ VITE_APP_NAME=VGL
 
 > These are known items to address before production deployment.
 
-- **Token Storage**: Auth tokens currently stored in `localStorage`. Consider switching to `httpOnly` cookie-based Sanctum SPA auth for better XSS protection.
-- **CORS**: Dev config is permissive. Lock down `allowed_origins` in `config/cors.php` for production.
-- **File Uploads**: Validate file types and scan uploads. Consider moving to S3 or a dedicated disk.
-- **Blog Content**: Sanitize Tiptap HTML output server-side to prevent XSS.
-- **Environment Files**: Never commit `.env` files. They are already in `.gitignore`.
+**Token Storage**: Auth tokens currently stored in `localStorage`. Consider switching to `httpOnly` cookie-based Sanctum SPA auth for better XSS protection.
 
----
+**CORS**: Dev config is permissive. Lock down `allowed_origins` in `config/cors.php` for production.
 
-## 🤝 Contributing
+**File Uploads**: Validate file types and scan uploads. Consider moving to S3 or a dedicated disk.
 
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/your-feature-name`
-3. Commit your changes: `git commit -m 'feat: add your feature'`
-4. Push to the branch: `git push origin feature/your-feature-name`
-5. Open a Pull Request
+**Blog Content**: Sanitize Tiptap HTML output server-side to prevent XSS.
+
+**Environment Files**: Never commit `.env` files. They are already in `.gitignore`.
 
 ---
 
